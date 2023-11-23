@@ -9,14 +9,21 @@ defmodule WyectionaryWeb.GamesGs do
   end
 
   def create_game(user_name) do
-    IO.inspect(user_name, label: "holaaa augusto")
     GenServer.call(__MODULE__, {:create_game, user_name})
+  end
+
+  def get_game(game_code) do
+    GenServer.call(__MODULE__, {:get_game, game_code})
   end
 
   ### server
   @impl true
   def init(_games) do
     {:ok, %{}}
+  end
+
+  def handle_call({:get_game, game_code}, _from, state) do
+    {:reply, {:ok, Map.get(state, String.to_atom(game_code))}, state}
   end
 
   def handle_call({:create_game, user_name}, _from, state) do

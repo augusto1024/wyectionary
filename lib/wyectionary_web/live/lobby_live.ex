@@ -47,9 +47,9 @@ defmodule WyectionaryWeb.LobbyLive do
   end
 
   def handle_event("create_game", %{"user_name" => name}, socket) do
-    {:ok, code_game} = GamesGs.create_game(name)
+    {:ok, game_code} = GamesGs.create_game(name)
 
     {:noreply,
-     push_event(socket, "save_user", %{user_name: name, redirect_url: ~p"/game/#{code_game}"})}
+     push_event(socket, "save_user", %{user_name: name, redirect_url: ~p"/game/#{game_code}"})}
   end
 end
