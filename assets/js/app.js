@@ -39,6 +39,13 @@ let hooks = {
           sessionStorage.setItem("user", user);
         }
       );
+
+      this.handleEvent(
+        "show_error",
+        ({ error_message: error_message }) => {
+          alert(error_message);
+        }
+      );
     },
   },
 };

@@ -52,4 +52,14 @@ defmodule WyectionaryWeb.LobbyLive do
     {:noreply,
      push_event(socket, "save_user", %{user_name: name, redirect_url: ~p"/game/#{game_code}"})}
   end
+
+  def handle_event("join_game", %{"lobby" => %{"game_code" => code, "user_name" => name}}, socket) do
+    case GamesGs.join_game(code, name) do
+      {:ok, _} ->
+        {:noreply,
+         push_event(socket, "save_user", %{user_name: name, redirect_url: ~p"/game/#{code}"})}
+      {:error, _} ->
+        {:noreply, push_event(socket, "show_error", %{error_message: "Game not found"})}
+    end
+  end
 end

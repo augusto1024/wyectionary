@@ -16,6 +16,10 @@ defmodule WyectionaryWeb.GamesGs do
     GenServer.call(__MODULE__, {:get_game, game_code})
   end
 
+  def join_game(game_code, user_name) do
+    GenServer.call(__MODULE__, {:join_game, game_code, user_name})
+  end
+
   ### server
   @impl true
   def init(_games) do
@@ -38,6 +42,21 @@ defmodule WyectionaryWeb.GamesGs do
          current_word: nil
        }
      })}
+  end
+
+  def handle_call({:join_game, game_code, user_name}, _from, state) do
+    case Map.get(state, String.to_atom(game_code)) do
+      nil ->
+        {:reply, {:error, :game_not_found}, state}
+
+      %{users: users} ->
+        {:reply, {:ok, game_code},
+         Map.put(
+           state,
+           game_code,
+           Map.put(state[String.to_atom(game_code)], :users, [user_name | users])
+         )}
+    end
   end
 
   @impl true
