@@ -18,6 +18,8 @@ defmodule WyectionaryWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/lobby", LobbyLive
+    live "/game/:game_code", GameLive
   end
 
   # Other scopes may use custom stacks.
