@@ -16,6 +16,7 @@ defmodule Wyectionary.Application do
       # Start a worker by calling: Wyectionary.Worker.start_link(arg)
       # {Wyectionary.Worker, arg},
       # Start to serve requests, typically the last entry
+      {WyectionaryWeb.GamesGs, []},
       WyectionaryWeb.Endpoint
     ]
 
