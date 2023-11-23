@@ -38,12 +38,12 @@ defmodule WyectionaryWeb.GamesGs do
   end
 
   def handle_call({:join_game, game_code, user_name}, _from, state) do
-    case Map.get(state, game_code) do
+    case Map.get(state, String.to_atom(game_code)) do
       nil ->
         {:reply, {:error, :game_not_found}, state}
       %{users: users} ->
         {:reply, {:ok, game_code},
-         Map.put(state, game_code, Map.put(state[game_code], :users, [user_name | users]))}
+         Map.put(state, game_code, Map.put(state[String.to_atom(game_code)], :users, [user_name | users]))}
     end
   end
 
