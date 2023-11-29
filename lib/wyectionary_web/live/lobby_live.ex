@@ -4,7 +4,11 @@ defmodule WyectionaryWeb.LobbyLive do
   alias WyectionaryWeb.GamesGs
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok,
+     assign(socket,
+       new_game_form: to_form(%{}, as: :new_game),
+       lobby_form: to_form(%{}, as: :lobby)
+     )}
   end
 
   def render(assigns) do
@@ -12,7 +16,7 @@ defmodule WyectionaryWeb.LobbyLive do
     <div id="save_user" phx-hook="SaveUser">
       <h1 class="text-lg font-bold uppercase">Join game</h1>
 
-      <.form for={:lobby} phx-submit="join_game">
+      <.form for={@lobby_form} phx-submit="join_game">
         <.input
           type="text"
           name="lobby[game_code]"
@@ -34,7 +38,7 @@ defmodule WyectionaryWeb.LobbyLive do
 
       <h1 class="text-lg font-bold uppercase">Create game</h1>
 
-      <.form for={:new_game} phx-submit="create_game">
+      <.form for={@new_game_form} phx-submit="create_game">
         <.input
           type="text"
           name="user_name"
@@ -60,6 +64,7 @@ defmodule WyectionaryWeb.LobbyLive do
       {:ok, _} ->
         {:noreply,
          push_event(socket, "save_user", %{user_name: name, redirect_url: ~p"/game/#{code}"})}
+
       {:error, _} ->
         {:noreply, push_event(socket, "show_error", %{error_message: "Game not found"})}
     end
