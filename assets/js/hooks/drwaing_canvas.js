@@ -1,3 +1,5 @@
+import throttle from '../utils/throttle';
+
 export default CanvasHook = {
   mounted() {
     const width = window.innerWidth;
@@ -42,12 +44,27 @@ export default CanvasHook = {
         return;
       }
 
+      throttle(function () {
+        // Send event to server
+        this.pushEvent('canvas_updated', {stage: stage.toJSON()});
+        // stage.toJSON();
+      }.bind(this), 150);
+
       // prevent scrolling on touch devices
       e.evt.preventDefault();
 
       const pos = stage.getPointerPosition();
       const newPoints = lastLine.points().concat([pos.x, pos.y]);
       lastLine.points(newPoints);
+    }.bind(this));
+
+    this.handleEvent('canvas_updated', ({ stage: updatedStage }) => {
+      updatedStage = JSON.parse(updatedStage)
+      const updatedLayer = updatedStage.children[0]
+      layer.destroyChildren()
+      updatedLayer.children.forEach((child) => {
+        layer.add(new Konva[child.className](child.attrs))
+      })
     });
   },
 };

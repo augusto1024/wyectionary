@@ -55,6 +55,21 @@ defmodule WyectionaryWeb.GameLive do
     {:noreply, assign(socket, user_name: name)}
   end
 
+  def handle_event("canvas_updated", %{"stage" => stage}, socket) do
+    Phoenix.PubSub.broadcast_from(
+      Wyectionary.PubSub,
+      self(),
+      "game:#{socket.assigns.game_code}",
+      {:canvas_updated, stage}
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:canvas_updated, stage}, socket) do
+    {:noreply, push_event(socket, "canvas_updated", %{stage: stage})}
+  end
+
   def handle_info({:new_user, name}, socket) do
     {:ok, game_params} = GamesGs.get_game(socket.assigns.game_code)
 
