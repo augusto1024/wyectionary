@@ -28,7 +28,7 @@ defmodule WyectionaryWeb.GameLive do
         </div>
       </div>
       <div class="mt-6 flex w-full">
-        <ul class="w-1/4 bg-gray-200 rounded-lg shadow-lg p-4 h-screen" role="players connected">
+        <ul class="w-1/4 bg-gray-200 rounded-lg shadow-lg p-4" role="players connected">
           <li
             :for={{user, index} <- Enum.with_index(@game_params.users, 1)}
             class={["uppercase", if(@user_name == user, do: "font-bold")]}

@@ -2,8 +2,8 @@ import throttle from '../utils/throttle';
 
 export default CanvasHook = {
   mounted() {
-    const width = window.innerWidth;
-    const height = window.innerHeight - 25;
+    const width = 500;
+    const height = 500;
 
     // first we need Konva core things: stage and layer
     const stage = new Konva.Stage({
