@@ -17,8 +17,7 @@ defmodule WyectionaryWeb.Router do
   scope "/", WyectionaryWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
-    live "/lobby", LobbyLive
+    live "/", LobbyLive
     live "/game/:game_code", GameLive
   end
 

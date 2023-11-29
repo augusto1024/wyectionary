@@ -10,7 +10,7 @@ defmodule WyectionaryWeb.LobbyLive do
   def render(assigns) do
     ~H"""
     <div id="save_user" phx-hook="SaveUser">
-      <h1>Join game</h1>
+      <h1 class="text-lg font-bold uppercase">Join game</h1>
 
       <.form for={:lobby} phx-submit="join_game">
         <.input
@@ -27,10 +27,12 @@ defmodule WyectionaryWeb.LobbyLive do
           label="User name"
           placeholder="Insert your name"
         />
-        <button type="submit">Join</button>
+        <.button type="submit">Join</.button>
       </.form>
 
-      <h1>Create game</h1>
+      <hr class="my-10" />
+
+      <h1 class="text-lg font-bold uppercase">Create game</h1>
 
       <.form for={:new_game} phx-submit="create_game">
         <.input
@@ -40,7 +42,7 @@ defmodule WyectionaryWeb.LobbyLive do
           label="User name"
           placeholder="Insert your name"
         />
-        <button type="submit">Create</button>
+        <.button type="submit">Create</.button>
       </.form>
     </div>
     """
