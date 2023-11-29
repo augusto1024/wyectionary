@@ -36,6 +36,9 @@ defmodule WyectionaryWeb.GameLive do
             <%= "#{index}. #{user}" %>
           </li>
         </ul>
+        <div class="w-3/4 h-full">
+          <div id="container" class="h-full w-full" phx-hook="DrawingCanvas" phx-update="ignore" />
+        </div>
       </div>
     </div>
     """
