@@ -7,47 +7,53 @@ defmodule WyectionaryWeb.LobbyLive do
     {:ok,
      assign(socket,
        new_game_form: to_form(%{}, as: :new_game),
-       lobby_form: to_form(%{}, as: :lobby)
+       lobby_form: to_form(%{}, as: :lobby),
+       game_count: GamesGs.games_count()
      )}
   end
 
   def render(assigns) do
     ~H"""
-    <div id="save_user" phx-hook="SaveUser">
-      <h1 class="text-lg font-bold uppercase">Join game</h1>
+    <div class="flex justify-center items-center">
+      <img src="/images/wyectionary-logo.webp" alt="Wyectionary" class="hidden sm:flex -ml-[130px]" />
+      <div class="flex flex-col sm:w-1/2" id="save_user" phx-hook="SaveUser">
+        <div class="flex items-center gap-2">
+          <h1 class="text-lg font-bold uppercase">Join game</h1>
+          <span class="text-xs"><%= @game_count %> game/s in progress</span>
+        </div>
+        <.form for={@lobby_form} phx-submit="join_game">
+          <.input
+            type="text"
+            name="lobby[game_code]"
+            value=""
+            label="Invitation code"
+            placeholder="Insert your code here"
+          />
+          <.input
+            type="text"
+            name="lobby[user_name]"
+            value=""
+            label="User name"
+            placeholder="Insert your name"
+          />
+          <.button type="submit" class="w-24">Join</.button>
+        </.form>
 
-      <.form for={@lobby_form} phx-submit="join_game">
-        <.input
-          type="text"
-          name="lobby[game_code]"
-          value=""
-          label="Invitation code"
-          placeholder="Insert your code here"
-        />
-        <.input
-          type="text"
-          name="lobby[user_name]"
-          value=""
-          label="User name"
-          placeholder="Insert your name"
-        />
-        <.button type="submit">Join</.button>
-      </.form>
+        <hr class="my-10" />
 
-      <hr class="my-10" />
+        <h1 class="text-lg font-bold uppercase">Create game</h1>
 
-      <h1 class="text-lg font-bold uppercase">Create game</h1>
-
-      <.form for={@new_game_form} phx-submit="create_game">
-        <.input
-          type="text"
-          name="user_name"
-          value=""
-          label="User name"
-          placeholder="Insert your name"
-        />
-        <.button type="submit">Create</.button>
-      </.form>
+        <.form for={@new_game_form} phx-submit="create_game">
+          <.input
+            type="text"
+            name="user_name"
+            value=""
+            label="User name"
+            placeholder="Insert your name"
+          />
+          <.button type="submit" class="w-24">Create</.button>
+        </.form>
+      </div>
     </div>
     """
   end

@@ -20,15 +20,15 @@ defmodule WyectionaryWeb.GameLive do
 
   def render(assigns) do
     ~H"""
-    <div id="restore_user" phx-hook="RestoreUser" class="w-full p-4">
+    <div id="restore_user" phx-hook="RestoreUser" class="relative w-full sm:p-4 z-30">
       <div class="flex justify-between">
         <div>
           <h1 class="text-3xl">Wyectionary</h1>
           <h2 class="text-xl">Game code: <%= @game_code %></h2>
         </div>
       </div>
-      <div class="mt-6 flex w-full">
-        <ul class="w-1/4 bg-gray-200 rounded-lg shadow-lg p-4" role="players connected">
+      <div class="flex flex-col-reverse sm:justify-center sm:flex-row mt-2 sm:mt-12 w-full gap-2 sm:gap-8 z-10">
+        <ul class="sm:w-1/4 bg-gray-300 rounded-lg shadow-lg p-4" role="players connected">
           <li
             :for={{user, index} <- Enum.with_index(@game_params.users, 1)}
             class={["uppercase", if(@user_name == user, do: "font-bold")]}
@@ -36,10 +36,15 @@ defmodule WyectionaryWeb.GameLive do
             <%= "#{index}. #{user}" %>
           </li>
         </ul>
-        <div class="w-3/4 h-full">
+        <div class="sm:w-[500px] h-full overflow-x-scroll border border-gray-400 rounded-lg bg-white shadow-lg">
           <div id="container" class="h-full w-full" phx-hook="DrawingCanvas" phx-update="ignore" />
         </div>
       </div>
+    </div>
+    <div class="absolute flex w-full h-80 bottom-0 left-0 justify-between">
+      <img src="/images/bottom-left-footer.png" alt="Wyectionary" class="hidden sm:flex" />
+      <img src="/images/bottom-center-footer.png" alt="Wyectionary" class="hidden sm:flex" />
+      <img src="/images/bottom-right-footer.png" alt="Wyectionary" class="hidden sm:flex" />
     </div>
     """
   end

@@ -16,18 +16,25 @@ defmodule WyectionaryWeb.GamesGs do
     GenServer.call(__MODULE__, {:get_game, game_code})
   end
 
+  def games_count() do
+    GenServer.call(__MODULE__, {:games_count})
+  end
+
   def join_game(game_code, user_name) do
     GenServer.call(__MODULE__, {:join_game, game_code, user_name})
   end
 
   ### server
-  @impl true
   def init(_games) do
     {:ok, %{}}
   end
 
   def handle_call({:get_game, game_code}, _from, state) do
     {:reply, {:ok, Map.get(state, game_code)}, state}
+  end
+
+  def handle_call({:games_count}, _from, state) do
+    {:reply, Map.keys(state) |> length(), state}
   end
 
   def handle_call({:create_game, user_name}, _from, state) do
@@ -66,15 +73,5 @@ defmodule WyectionaryWeb.GamesGs do
            Map.put(state[game_code], :users, [user_name | users])
          )}
     end
-  end
-
-  @impl true
-  def handle_call(:pop, _from, [head | tail]) do
-    {:reply, head, tail}
-  end
-
-  @impl true
-  def handle_cast({:push, element}, state) do
-    {:noreply, [element | state]}
   end
 end
