@@ -21,34 +21,8 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
+import hooks from './hooks'
 
-let hooks = {
-  RestoreUser: {
-    mounted() {
-      const user = sessionStorage.getItem("user");
-      this.pushEvent("restore_user", { user_name: user });
-    },
-  },
-  SaveUser: {
-    mounted() {
-      this.handleEvent(
-        "save_user",
-        ({ user_name: user, redirect_url: redirect_url }) => {
-          console.log(redirect_url);
-          window.location = redirect_url;
-          sessionStorage.setItem("user", user);
-        }
-      );
-
-      this.handleEvent(
-        "show_error",
-        ({ error_message: error_message }) => {
-          alert(error_message);
-        }
-      );
-    },
-  },
-};
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
