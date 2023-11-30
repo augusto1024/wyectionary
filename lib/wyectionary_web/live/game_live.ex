@@ -14,7 +14,8 @@ defmodule WyectionaryWeb.GameLive do
        state: :waiting,
        current_word: nil,
        game_params: game_params,
-       user_name: nil
+       user_name: nil,
+       messages: []
      )}
   end
 
@@ -48,6 +49,24 @@ defmodule WyectionaryWeb.GameLive do
         </div>
       </div>
     </div>
+    <div class="absolute right-0 top-1/4 w-1/4 bg-white border-l shadow-lg">
+      <div class="overflow-y-auto h-96 p-4">
+          <ul id="message-list">
+              <%= for {user, msg} <- @messages do %>
+                  <li class="mb-2 last:mb-0">
+                      <strong class="font-semibold"><%= user %>:</strong>
+                      <span class="ml-2 text-gray-600"><%= msg %></span>
+                  </li>
+              <% end %>
+          </ul>
+      </div>
+      <div class="border-t p-4">
+          <form phx-submit="send_message">
+              <input type="text" name="message" placeholder="Type a message..." class="w-full border-gray-300 rounded-lg shadow-sm p-2">
+              <button type="submit" class="hidden">Send</button>
+          </form>
+      </div>
+    </div>
     <div class="absolute flex w-full h-80 bottom-0 left-0 justify-between">
       <img src="/images/bottom-left-footer.png" alt="Wyectionary" class="hidden sm:flex" />
       <img src="/images/bottom-center-footer.png" alt="Wyectionary" class="hidden sm:flex" />
@@ -78,6 +97,20 @@ defmodule WyectionaryWeb.GameLive do
     {:noreply, socket}
   end
 
+  def handle_event("send_message", %{"message" => msg}, socket) do
+    # Broadcast message to other users
+    Phoenix.PubSub.broadcast_from(
+      Wyectionary.PubSub,
+      self(),
+      "game:#{socket.assigns.game_code}",
+      {:new_message, socket.assigns.user_name, msg}
+    )
+
+    # Update local state
+    messages = [{socket.assigns.user_name, msg} | socket.assigns.messages]
+    {:noreply, assign(socket, :messages, messages)}
+  end
+
   def handle_info({:canvas_updated, stage}, socket) do
     {:noreply, push_event(socket, "canvas_updated", %{stage: stage})}
   end
@@ -90,4 +123,16 @@ defmodule WyectionaryWeb.GameLive do
      |> put_flash(:info, "#{name} joined the game")
      |> assign(game_params: game_params)}
   end
+
+  def handle_info({:new_message, user_name, msg}, socket) do
+  # Construct the message tuple
+    new_message = {user_name, msg}
+
+    # Append the new message to the existing list of messages
+    messages = [new_message | socket.assigns.messages]
+
+    # Update the socket's state with the new list of messages
+    {:noreply, assign(socket, :messages, messages)}
+  end
+
 end
