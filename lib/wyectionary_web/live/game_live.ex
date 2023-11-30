@@ -44,7 +44,7 @@ defmodule WyectionaryWeb.GameLive do
           </ul>
         </div>
         <div class="sm:w-[500px] h-full overflow-x-scroll border border-gray-400 rounded-lg bg-white shadow-lg">
-          <div id="container" class="h-full w-full" phx-hook="DrawingCanvas" phx-update="ignore" />
+          <div id="container" current_user={@game_params.current_user} class="h-full w-full" phx-hook="DrawingCanvas" phx-update="ignore" />
         </div>
       </div>
     </div>

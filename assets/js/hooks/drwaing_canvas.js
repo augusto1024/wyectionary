@@ -18,7 +18,9 @@ export default CanvasHook = {
     let isPaint = false;
     let lastLine;
 
-    stage.on('mousedown touchstart', function (e) {
+    const editable = this.el.attributes.current_user.value === sessionStorage.getItem('user');
+
+    editable && stage.on('mousedown touchstart', function (e) {
       isPaint = true;
       const pos = stage.getPointerPosition();
       lastLine = new Konva.Line({
@@ -34,12 +36,12 @@ export default CanvasHook = {
       layer.add(lastLine);
     });
 
-    stage.on('mouseup touchend', function () {
+    editable && stage.on('mouseup touchend', function () {
       isPaint = false;
     });
 
     // and core function - drawing
-    stage.on('mousemove touchmove', function (e) {
+    editable && stage.on('mousemove touchmove', function (e) {
       if (!isPaint) {
         return;
       }
