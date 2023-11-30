@@ -47,24 +47,24 @@ defmodule WyectionaryWeb.GameLive do
         <div class="sm:w-[500px] h-full overflow-x-scroll border border-gray-400 rounded-lg bg-white shadow-lg">
           <div id="container" class="h-full w-full" phx-hook="DrawingCanvas" phx-update="ignore" />
         </div>
-      </div>
-    </div>
-    <div class="absolute right-0 top-1/4 w-1/4 bg-white border-l shadow-lg">
-      <div class="overflow-y-auto h-96 p-4">
-          <ul id="message-list">
-              <%= for {user, msg} <- @messages do %>
-                  <li class="mb-2 last:mb-0">
-                      <strong class="font-semibold"><%= user %>:</strong>
-                      <span class="ml-2 text-gray-600"><%= msg %></span>
-                  </li>
-              <% end %>
-          </ul>
-      </div>
-      <div class="border-t p-4">
-          <form phx-submit="send_message">
-              <input type="text" name="message" placeholder="Type a message..." class="w-full border-gray-300 rounded-lg shadow-sm p-2">
-              <button type="submit" class="hidden">Send</button>
-          </form>
+        <div class="bg-white border-l shadow-lg">
+          <div class="overflow-y-auto h-96 p-4">
+              <ul id="message-list">
+                  <%= for {user, msg} <- @messages do %>
+                      <li class="mb-2 last:mb-0">
+                          <strong class="font-semibold"><%= user %>:</strong>
+                          <span class="ml-2 text-gray-600"><%= msg %></span>
+                      </li>
+                  <% end %>
+              </ul>
+          </div>
+          <div class="border-t p-4">
+              <form phx-submit="send_message">
+                  <input type="text" name="message" placeholder="Type a message..." class="w-full border-gray-300 rounded-lg shadow-sm p-2">
+                  <button type="submit" class="hidden">Send</button>
+              </form>
+          </div>
+        </div>
       </div>
     </div>
     <div class="absolute flex w-full h-80 bottom-0 left-0 justify-between">
